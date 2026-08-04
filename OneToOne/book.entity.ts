@@ -2,7 +2,7 @@
 // The Book entity maps back to the user property on the User entity.
 
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
-import { User } from '../user/user.entity';
+import { User } from './user.entity';
 
 @Entity('books')
 export class Book {
