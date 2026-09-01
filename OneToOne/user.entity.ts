@@ -13,7 +13,7 @@ export class User {
     name: string;
 
     // Direct foreign key column mapping (allows user.bookId = 12)
-    @Column({ nullable: true })
+    @Column({ nullable: true, unique: true })
     bookId: number;
 
     @OneToOne(() => Book, (book) => book.user, { onDelete: 'CASCADE' })

@@ -42,9 +42,10 @@ export class CreateUserBookAndRelations1710000000000 implements MigrationInterfa
     await queryRunner.createForeignKey(
       'user_books',
       new TableForeignKey({
+        name: 'FK_user_books_user_id',
         columnNames: ['user_id'],
-        referencedColumnNames: ['id'],
         referencedTableName: 'users',
+        referencedColumnNames: ['id'],
         onDelete: 'CASCADE',
       }),
     );
@@ -52,15 +53,21 @@ export class CreateUserBookAndRelations1710000000000 implements MigrationInterfa
     await queryRunner.createForeignKey(
       'user_books',
       new TableForeignKey({
+        name: 'FK_user_books_book_id',
         columnNames: ['book_id'],
-        referencedColumnNames: ['id'],
         referencedTableName: 'books',
+        referencedColumnNames: ['id'],
         onDelete: 'CASCADE',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    // 1. Drop Foreign Keys First
+    await queryRunner.dropForeignKey('user_books', 'FK_user_books_book_id');
+    await queryRunner.dropForeignKey('user_books', 'FK_user_books_user_id');
+
+    // 2. Drop Tables in Reverse Order
     await queryRunner.dropTable('user_books');
     await queryRunner.dropTable('books');
     await queryRunner.dropTable('users');

@@ -1,19 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+// Book Entity (Many Side - Owning Side)
+// Many books can belong to one author. Holds the foreign key (authorId).
 
-// author.entity.ts
-@Entity('authors')
-export class Author {
-    @PrimaryGeneratedColumn()
-    id: number;
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Author } from './author.entity';
 
-    @Column()
-    name: string;
-
-    @OneToMany(() => Book, (book) => book.author)
-    books: Book[];
-}
-
-// book.entity.ts
 @Entity('books')
 export class Book {
     @PrimaryGeneratedColumn()

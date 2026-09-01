@@ -21,7 +21,7 @@ export class CreateUserAndBook1700000000000 implements MigrationInterface {
                 columns: [
                     { name: 'id', type: 'int', isPrimary: true, isGenerated: true, generationStrategy: 'increment' },
                     { name: 'name', type: 'varchar', isNullable: false },
-                    { name: 'bookId', type: 'int', isNullable: true },
+                    { name: 'bookId', type: 'int', isNullable: true, isUnique: true },
                 ],
             }),
             true,
@@ -31,6 +31,7 @@ export class CreateUserAndBook1700000000000 implements MigrationInterface {
         await queryRunner.createForeignKey(
             'users',
             new TableForeignKey({
+                name: 'FK_users_bookId',
                 columnNames: ['bookId'],
                 referencedTableName: 'books',
                 referencedColumnNames: ['id'],
@@ -40,7 +41,7 @@ export class CreateUserAndBook1700000000000 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey('users', 'bookId');
+        await queryRunner.dropForeignKey('users', 'FK_users_bookId');
         await queryRunner.dropTable('users');
         await queryRunner.dropTable('books');
     }

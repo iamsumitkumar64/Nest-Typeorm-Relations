@@ -1,71 +1,75 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class CreateAuthorAndBookTables1234567890123 implements MigrationInterface {
-
     public async up(queryRunner: QueryRunner): Promise<void> {
-        // 1. Create Author Table
+        // 1. Create Authors Table
         await queryRunner.createTable(
             new Table({
-                name: "author",
+                name: 'authors',
                 columns: [
                     {
-                        name: "id",
-                        type: "int",
+                        name: 'id',
+                        type: 'int',
                         isPrimary: true,
                         isGenerated: true,
-                        generationStrategy: "increment",
+                        generationStrategy: 'increment',
+                    },
+                    {
+                        name: 'name',
+                        type: 'varchar',
+                        isNullable: false,
                     },
                 ],
             }),
-            true
+            true,
         );
 
-        // 2. Create Book Table (With the Foreign Key Column)
+        // 2. Create Books Table (With the Foreign Key Column)
         await queryRunner.createTable(
             new Table({
-                name: "book",
+                name: 'books',
                 columns: [
                     {
-                        name: "id",
-                        type: "int",
+                        name: 'id',
+                        type: 'int',
                         isPrimary: true,
                         isGenerated: true,
-                        generationStrategy: "increment",
+                        generationStrategy: 'increment',
                     },
                     {
-                        name: "title",
-                        type: "varchar",
+                        name: 'title',
+                        type: 'varchar',
                         isNullable: false,
                     },
                     {
-                        name: "authorId", // This stores the relation ID
-                        type: "int",
+                        name: 'authorId', // Foreign key column
+                        type: 'int',
                         isNullable: true, // Set to false if a book MUST have an author
                     },
                 ],
             }),
-            true
+            true,
         );
 
         // 3. Create the One-To-Many / Many-To-One Foreign Key
         await queryRunner.createForeignKey(
-            "book",
+            'books',
             new TableForeignKey({
-                name: "FK_book_author",
-                columnNames: ["authorId"],
-                referencedColumnNames: ["id"],
-                referencedTableName: "author",
-                onDelete: "CASCADE", // Options: DEFAULT, SET NULL, RESTRICT, CASCADE
-            })
+                name: 'FK_books_authorId',
+                columnNames: ['authorId'],
+                referencedTableName: 'authors',
+                referencedColumnNames: ['id'],
+                onDelete: 'CASCADE', // Options: CASCADE, SET NULL, RESTRICT, NO ACTION
+            }),
         );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         // 1. Drop Foreign Key First
-        await queryRunner.dropForeignKey("book", "FK_book_author");
+        await queryRunner.dropForeignKey('books', 'FK_books_authorId');
 
         // 2. Drop Tables in Reverse Order
-        await queryRunner.dropTable("book");
-        await queryRunner.dropTable("author");
+        await queryRunner.dropTable('books');
+        await queryRunner.dropTable('authors');
     }
 }
