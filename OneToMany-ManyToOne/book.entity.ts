@@ -1,8 +1,8 @@
 // Book Entity (Many Side - Owning Side)
-// Many books can belong to one author. Holds the foreign key (authorId).
+// Many books can belong to one user. Holds the foreign key (userId).
 
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Author } from './author.entity';
+import { User } from './user.entity';
 
 @Entity('books')
 export class Book {
@@ -12,11 +12,11 @@ export class Book {
     @Column()
     title: string;
 
-    // Direct foreign key column mapping (allows book.authorId = 12)
+    // Direct foreign key column mapping (allows book.userId = 12)
     @Column({ nullable: true })
-    authorId: number;
+    userId: number;
 
-    @ManyToOne(() => Author, (author) => author.books, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'authorId' })
-    author: Author;
+    @ManyToOne(() => User, (user) => user.books, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 }

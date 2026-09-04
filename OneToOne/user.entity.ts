@@ -1,7 +1,7 @@
-// User Entity (Owner Side)
-// The User entity owns the relation and holds the foreign key (bookId).
+// User Entity (Inverse Side)
+// The User entity maps back to the book property on the Book entity.
 
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { Book } from './book.entity';
 
 @Entity('users')
@@ -12,12 +12,7 @@ export class User {
     @Column()
     name: string;
 
-    // Direct foreign key column mapping (allows user.bookId = 12)
-    @Column({ nullable: true, unique: true })
-    bookId: number;
-
-    @OneToOne(() => Book, (book) => book.user, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'bookId' })
+    @OneToOne(() => Book, (book) => book.user)
     book: Book;
 }
 

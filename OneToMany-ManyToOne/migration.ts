@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
-export class CreateAuthorAndBookTables1234567890123 implements MigrationInterface {
+export class CreateUserAndBookTables1234567890123 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
-        // 1. Create Authors Table
+        // 1. Create Users Table
         await queryRunner.createTable(
             new Table({
-                name: 'authors',
+                name: 'users',
                 columns: [
                     {
                         name: 'id',
@@ -42,9 +42,9 @@ export class CreateAuthorAndBookTables1234567890123 implements MigrationInterfac
                         isNullable: false,
                     },
                     {
-                        name: 'authorId', // Foreign key column
+                        name: 'userId', // Foreign key column
                         type: 'int',
-                        isNullable: true, // Set to false if a book MUST have an author
+                        isNullable: true, // Set to false if a book MUST have a user
                     },
                 ],
             }),
@@ -55,9 +55,9 @@ export class CreateAuthorAndBookTables1234567890123 implements MigrationInterfac
         await queryRunner.createForeignKey(
             'books',
             new TableForeignKey({
-                name: 'FK_books_authorId',
-                columnNames: ['authorId'],
-                referencedTableName: 'authors',
+                name: 'FK_books_userId',
+                columnNames: ['userId'],
+                referencedTableName: 'users',
                 referencedColumnNames: ['id'],
                 onDelete: 'CASCADE', // Options: CASCADE, SET NULL, RESTRICT, NO ACTION
             }),
@@ -66,10 +66,10 @@ export class CreateAuthorAndBookTables1234567890123 implements MigrationInterfac
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         // 1. Drop Foreign Key First
-        await queryRunner.dropForeignKey('books', 'FK_books_authorId');
+        await queryRunner.dropForeignKey('books', 'FK_books_userId');
 
         // 2. Drop Tables in Reverse Order
         await queryRunner.dropTable('books');
-        await queryRunner.dropTable('authors');
+        await queryRunner.dropTable('users');
     }
 }
