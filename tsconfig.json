@@ -1,0 +1,5 @@
+{
+  "compilerOptions": {
+    "strictPropertyInitialization": false, // this help while intialize ts errors
+  }
+}
