@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "strictPropertyInitialization": false, // this help while intialize ts errors
   }
 }
