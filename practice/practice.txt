@@ -1,0 +1,25 @@
+in this domain we have
+
+    2 entity ->
+        user.entity.ts,
+        book.entity.ts
+    2 migration ->
+        1.user.migration.ts,
+        2.book.migration.ts
+
+which follow 1:N and N:1 relation nicely
+
+
+but in future we changed this relation to 1:1 relation
+so i made new files
+
+    2 entity ->
+        user.new.entity.ts,
+        book.new.entity.ts
+    1 migration ->
+        3.new.migration.ts,
+
+
+in 3.new.migration.ts
+    1. broke relation by changing user_uuid unique
+    2. existing relation works by default
